@@ -8,3 +8,10 @@
 2024-04-25 12:02:57,749 - INFO - API Request Successful
 2024-04-25 12:11:36,494 - INFO - API Request Successful
 2024-04-25 12:13:04,217 - INFO - API Request Successful
+2024-04-29 15:43:57,747 - INFO - API Request Successful
+2024-04-29 15:44:16,191 - INFO - API Request Successful
+2024-04-29 15:44:16,191 - ERROR - Trouble reading the JSON file
+2024-04-29 15:44:20,890 - INFO - API Request Successful
+2024-04-29 15:44:20,904 - ERROR - Trouble reading the JSON file
+2024-04-29 17:28:32,949 - ERROR - Invalid Input Detected
+2024-04-29 17:28:36,449 - INFO - API Request Successful
