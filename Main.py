@@ -1,69 +1,45 @@
-from datetime import date, timedelta, datetime
-import datetime
+import CleanUp
+import DataRetrieve
+import Logger
+from secrets_1 import key
 
+# Pip install requests
 import requests
 
-index = 0
-
-
 def main():
-    key = "536c75445ddd436e3bdf96e3bf10f152"
-    zip_code = int(input("Please Enter a zipcode... "))
-    if len(str(zip_code)) != 5:
-        print('Invalid Zipcode')
+    
+    zip_code = input(f"Please Enter a zipcode... ")
+    
+    # Check the zip code to see if it is valid
+    if CleanUp.zipSanitize(zip_code) == False:
+        print(f'Invalid Zipcode')
+        Logger.logger.error(f'Invalid Input Detected')
         main()
     else:
-        weather = requests.get(
-            f"https://api.openweathermap.org/data/2.5/forecast?q={zip_code},US&units=imperial&APPID={key}")
-        stuff = weather.json()
-        if stuff["cod"] != "404":
-            print(stuff)
-            # current_temp = stuff['list'][index]['main']['temp']
-            # current_date = stuff['list'][index]['dt_txt']
-            # current_date = current_date[0:10]
-
-            # highest = get_high(current_date, stuff, index)
-            # lowest = get_low(current_date, stuff, index)
-
-            #day2 = str(datetime.now().date() + timedelta(days=1))
-            #day3 = str(datetime.now().date() + timedelta(days=2))
-
-            day2 = stuff['list'][8]['dt_txt'][0:10]
-            day3 = stuff['list'][16]['dt_txt'][0:10]
-            print("The weather for today is " + str(get_temp(0, stuff)) + " and " + str(get_type(0, stuff)))
-            print("The weather for " + day2 + " is " + str(get_temp(8, stuff)) + " degrees and " + str(get_type(8, stuff)))
-            print("The weather for " + day3 + " is " + str(get_temp(16, stuff)) + " degrees and " + str(get_type(16, stuff)))
-        else:
-            print('Could not find location try again...')
+        try:
+            weather = requests.get(f"https://api.openweathermap.org/data/2.5/forecast?q={zip_code},US&units=imperial&APPID={key}")
+            stuff = weather.json()
+            Logger.logger.info(f'API Request Successful')
+        except:
+            print(f'Something went wrong try again...')
+            Logger.logger.error(f'API Request Failed')
             main()
-
-
-def get_temp(i, stuff):
-    return stuff['list'][i]['main']['temp']
-
-def get_type(i, stuff):
-    return stuff['list'][i]['weather'][0]['main']
-
-def get_high(day, stuff, i):
-    highest = -10000
-    while day == stuff['list'][i]['dt_txt'][0:10]:
-
-        high = stuff['list'][i]['main']['temp_max']
-        if high >= highest:
-            highest = high
-        i += 1
-    return highest
-
-
-def get_low(day, stuff, i):
-    lowest = 10000
-    while day == stuff['list'][i]['dt_txt'][0:10]:
-
-        low = stuff['list'][i]['main']['temp_min']
-        if low <= lowest:
-            lowest = low
-        i += 1
-    return lowest
-
-
+             
+        if CleanUp.validate_json(stuff) == False:
+            print(f'Bad Data...Try again...')
+            Logger.logger.error(f'Data from API was not JSON...BAD DATA')
+            main()
+        else:
+            # Runs if the JSON is not, not empty/ not found
+            if stuff["cod"] != "404":
+                # print(stuff)
+                day2 = DataRetrieve.get_date(8, stuff)
+                day3 = DataRetrieve.get_date(16, stuff)
+                print(f"The weather for today is " + str(DataRetrieve.get_temp(0, stuff)) + " and " + str(DataRetrieve.get_type(0, stuff)))
+                print(f"The weather for " + day2 + " is " + str(DataRetrieve.get_temp(8, stuff)) + " degrees and " + str(DataRetrieve.get_type(8, stuff)))
+                print(f"The weather for " + day3 + " is " + str(DataRetrieve.get_temp(16, stuff)) + " degrees and " + str(DataRetrieve.get_type(16, stuff)))
+            else:
+                print(f'Could not find location try again...')
+                Logger.logger.error(f'Trouble reading the JSON file')
+                main()
 main()

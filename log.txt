@@ -1,0 +1,10 @@
+2024-04-25 11:58:42,784 - DEBUG - This is a debug message
+2024-04-25 11:58:42,784 - INFO - This is an info message
+2024-04-25 11:58:42,784 - WARNING - This is a warning message
+2024-04-25 11:58:42,784 - ERROR - This is an error message
+2024-04-25 11:58:42,784 - CRITICAL - This is a critical message
+2024-04-25 12:01:55,458 - ERROR - Invalid Input Detected
+2024-04-25 12:01:58,230 - INFO - API Request Successful
+2024-04-25 12:02:57,749 - INFO - API Request Successful
+2024-04-25 12:11:36,494 - INFO - API Request Successful
+2024-04-25 12:13:04,217 - INFO - API Request Successful
